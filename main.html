@@ -4,26 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام إدارة المعارض - محافظة جنوب الباطنة</title>
-    <!-- مكتبات FullCalendar -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.js"></script>
-    <!-- مكتبة XLSX -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- مكتبة PizZip -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.2.2/pizzip.min.js"></script>
-    <!-- مكتبة docxtemplater -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.4/docxtemplater.min.js"></script>
-    <!-- مكتبة FileSaver -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.0.0/pizzip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.23.7/docxtemplater.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
         }
         .container {
             background-color: white;
@@ -32,9 +24,7 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             max-width: 600px;
             margin: 0 auto;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+            position: relative;
         }
         h1, h2 {
             color: #333;
@@ -89,39 +79,11 @@
         }
         .footer {
             text-align: center;
-            margin-top: auto;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
         }
     </style>
-    <script>
-        // التحقق من تحميل المكتبات
-        window.onload = function() {
-            if (typeof FullCalendar === 'undefined') {
-                console.error('مكتبة FullCalendar لم يتم تحميلها بشكل صحيح.');
-            } else {
-                console.log('مكتبة FullCalendar تم تحميلها بنجاح.');
-            }
-            if (typeof XLSX === 'undefined') {
-                console.error('مكتبة XLSX لم يتم تحميلها بشكل صحيح.');
-            } else {
-                console.log('مكتبة XLSX تم تحميلها بنجاح.');
-            }
-            if (typeof PizZip === 'undefined') {
-                console.error('مكتبة PizZip لم يتم تحميلها بشكل صحيح.');
-            } else {
-                console.log('مكتبة PizZip تم تحميلها بنجاح.');
-            }
-            if (typeof docxtemplater === 'undefined') {
-                console.error('مكتبة docxtemplater لم يتم تحميلها بشكل صحيح.');
-            } else {
-                console.log('مكتبة docxtemplater تم تحميلها بنجاح.');
-            }
-            if (typeof saveAs === 'undefined') {
-                console.error('مكتبة FileSaver لم يتم تحميلها بشكل صحيح.');
-            } else {
-                console.log('مكتبة FileSaver تم تحميلها بنجاح.');
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="container">
@@ -421,7 +383,7 @@
                         doc.render();
                     } catch (error) {
                         console.error(error);
-                        alert('حدث خطأ أثناء توليد التصريح: ' + error.message);
+                        alert('حدث خطأ أثناء توليد التصريح');
                         return;
                     }
 
@@ -431,13 +393,7 @@
                     });
 
                     saveAs(out, `تصريح_${exhibition.exhibitionName}.docx`);
-                } else {
-                    alert('تعذر تحميل قالب التصريح. الرجاء التحقق من الرابط.');
                 }
-            };
-
-            xhr.onerror = function() {
-                alert('تعذر الاتصال بالخادم لتحميل القالب.');
             };
 
             xhr.send();
