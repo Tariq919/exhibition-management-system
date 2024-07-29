@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة المعارض - محافظة جنوب الباطنة</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.0.0/pizzip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.23.7/docxtemplater.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #8B0000; /* Dark red color */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #A52A2A; /* Brown color */
+        }
+        #calendar, #searchResults {
+            margin-top: 20px;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 200px;
+        }
+        .highlight {
+            background-color: yellow;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .success {
+            color: green;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .footer {
+            text-align: center;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://upload.wikimedia.org/wikipedia/ar/3/30/%D8%B4%D8%B9%D8%A7%D8%B1_%D9%88%D8%B2%D8%A7%D8%B1%D8%A9_%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9_%D9%88%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D8%A9_%D9%88%D8%AA%D8%B1%D9%88%D9%8A%D8%AC_%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1_%D8%A7%D9%84%D8%B9%D9%85%D8%A7%D9%86%D9%8A%D8%A9.jpg" alt="شعار وزارة التجارة والصناعة وترويج الاستثمار العمانية" class="logo">
+        <h1>نظام إدارة المعارض - محافظة جنوب الباطنة</h1>
+
+        <div id="mainContent">
+            <button id="manageUsersBtn" style="display:none;" onclick="navigateToUserManagement()">إدارة المستخدمين</button>
+            <form id="exhibitionForm">
+                <label for="exhibitionName">اسم المعرض:</label>
+                <input type="text" id="exhibitionName" required>
+                
+                <label for="location">الموقع:</label>
+                <input type="text" id="location" required>
+                
+                <label for="wilayat">الولاية:</label>
+                <select id="wilayat" required>
+                    <option value="">اختر الولاية</option>
+                    <option value="الرستاق">الرستاق</option>
+                    <option value="بركاء">بركاء</option>
+                    <option value="المصنعة">المصنعة</option>
+                    <option value="نخل">نخل</option>
+                    <option value="وادي المعاول">وادي المعاول</option>
+                    <option value="العوابي">العوابي</option>
+                </select>
+                
+                <label for="startDate">تاريخ البداية:</label>
+                <input type="date" id="startDate" required>
+                
+                <label for="endDate">تاريخ النهاية:</label>
+                <input type="date" id="endDate" required>
+                
+                <label for="exhibitionType">نوع المعرض:</label>
+                <select id="exhibitionType" required>
+                    <option value="">اختر نوع المعرض</option>
+                    <option value="معرض الاسر المنتجة">معرض الاسر المنتجة</option>
+                    <option value="معرض المنتجات الوطنية">معرض المنتجات الوطنية</option>
+                    <option value="المعرض المبتكر">المعرض المبتكر</option>
+                    <option value="معرض الدولة الواحدة">معرض الدولة الواحدة</option>
+                    <option value="معرض تخصصي">معرض تخصصي</option>
+                    <option value="معرض مصاحب">معرض مصاحب</option>
+                    <option value="معرض المنتجات والصناعات الخليجية">معرض المنتجات والصناعات الخليجية</option>
+                    <option value="المعرض الثقافي">المعرض الثقافي</option>
+                    <option value="المعرض الخيري">المعرض الخيري</option>
+                    <option value="معرض العيد">معرض العيد</option>
+                    <option value="المعرض الافتراضي">المعرض الافتراضي</option>
+                </select>
+                
+                <label for="organizingCompany">الشركة المنظمة:</label>
+                <input type="text" id="organizingCompany" required>
+                
+                <button type="submit">إضافة المعرض</button>
+                <div id="exhibitionError" class="error"></div>
+                <div id="exhibitionSuccess" class="success"></div>
+            </form>
+
+            <button onclick="showAllExhibitions()">عرض جميع المعارض</button>
+            <button onclick="generateReport()">توليد تقرير</button>
+
+            <div id="searchForm">
+                <h2>البحث عن المعارض</h2>
+                <label for="searchWilayat">الولاية:</label>
+                <select id="searchWilayat">
+                    <option value="">الكل</option>
+                    <option value="الرستاق">الرستاق</option>
+                    <option value="بركاء">بركاء</option>
+                    <option value="المصنعة">المصنعة</option>
+                    <option value="نخل">نخل</option>
+                    <option value="وادي المعاول">وادي المعاول</option>
+                    <option value="العوابي">العوابي</option>
+                </select>
+                
+                <label for="searchCompany">الشركة المنظمة:</label>
+                <input type="text" id="searchCompany">
+                
+                <label for="searchStartDate">من تاريخ:</label>
+                <input type="date" id="searchStartDate">
+                
+                <label for="searchEndDate">إلى تاريخ:</label>
+                <input type="date" id="searchEndDate">
+                
+                <button type="button" onclick="searchExhibitions()">بحث</button>
+            </div>
+
+            <div id="calendar"></div>
+            <div id="searchResults"></div>
+        </div>
+        <div class="footer">جميع الحقوق محفوظة لادارة التجارة والصناعة وترويج الاستثمار بمحافظة جنوب الباطنة</div>
+    </div>
+
+    <script>
+        let exhibitions = [];
+        let currentUser = localStorage.getItem('currentUser');
+        let storageAvailable = false;
+
+        // التحقق من توفر localStorage
+        try {
+            localStorage.setItem('test', 'test');
+            localStorage.removeItem('test');
+            storageAvailable = true;
+        } catch(e) {
+            console.warn('localStorage غير متاح. سيتم استخدام التخزين المؤقت في الذاكرة.');
+        }
+
+        // استرجاع البيانات المخزنة إذا كانت متاحة
+        if (storageAvailable) {
+            const storedExhibitions = localStorage.getItem('exhibitions');
+            if (storedExhibitions) {
+                exhibitions = JSON.parse(storedExhibitions);
+            }
+        }
+
+        window.onload = function() {
+            if (!currentUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // إظهار زر إدارة المستخدمين فقط للمستخدم الرئيسي
+            if (currentUser === 'admin') {
+                document.getElementById('manageUsersBtn').style.display = 'block';
+            }
+
+            document.getElementById('mainContent').style.display = 'block';
+            updateCalendar();
+        };
+
+        function saveExhibitions() {
+            if (storageAvailable) {
+                localStorage.setItem('exhibitions', JSON.stringify(exhibitions));
+            }
+        }
+
+        document.getElementById('exhibitionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            addExhibition();
+        });
+
+        function addExhibition() {
+            const exhibitionName = document.getElementById('exhibitionName').value;
+            const location = document.getElementById('location').value;
+            const wilayat = document.getElementById('wilayat').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const exhibitionType = document.getElementById('exhibitionType').value;
+            const organizingCompany = document.getElementById('organizingCompany').value;
+
+            const conflictingExhibition = exhibitions.find(ex => 
+                ex.wilayat === wilayat && 
+                ex.exhibitionType === exhibitionType && 
+                ((new Date(startDate) >= new Date(ex.startDate) && new Date(startDate) <= new Date(ex.endDate)) ||
+                 (new Date(endDate) >= new Date(ex.startDate) && new Date(endDate) <= new Date(ex.endDate)))
+            );
+
+            if (conflictingExhibition) {
+                document.getElementById('exhibitionError').innerText = `تنبيه: يوجد معرض مماثل في نفس الولاية ونفس الفترة ونفس النوع. اسم المعرض الموجود: ${conflictingExhibition.exhibitionName}`;
+                return;
+            }
+
+            const newExhibition = {
+                exhibitionName,
+                location,
+                wilayat,
+                startDate,
+                endDate,
+                exhibitionType,
+                organizingCompany,
+                addedBy: currentUser
+            };
+
+            exhibitions.push(newExhibition);
+            saveExhibitions();
+            updateCalendar();
+            document.getElementById('exhibitionForm').reset();
+            document.getElementById('exhibitionError').innerText = '';
+            document.getElementById('exhibitionSuccess').innerText = 'تمت إضافة المعرض بنجاح';
+        }
+
+        function updateCalendar() {
+            const calendarDiv = document.getElementById('calendar');
+            calendarDiv.innerHTML = '<h2>تقويم المعارض</h2>';
+            const calendarEl = document.createElement('div');
+            calendarEl.id = 'calendarEl';
+            calendarDiv.appendChild(calendarEl);
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'ar',
+                events: exhibitions.map(ex => ({
+                    title: ex.exhibitionName,
+                    start: ex.startDate,
+                    end: ex.endDate,
+                    extendedProps: {
+                        location: ex.location,
+                        wilayat: ex.wilayat,
+                        exhibitionType: ex.exhibitionType,
+                        organizingCompany: ex.organizingCompany,
+                        addedBy: ex.addedBy
+                    }
+                })),
+                eventDidMount: function(info) {
+                    info.el.querySelector('.fc-event-title').innerHTML +=
+                        `<br/>الولاية: ${info.event.extendedProps.wilayat}` +
+                        `<br/>الشركة المنظمة: ${info.event.extendedProps.organizingCompany}`;
+                }
+            });
+
+            calendar.render();
+        }
+
+        function deleteExhibition(exhibitionName) {
+            exhibitions = exhibitions.filter(ex => ex.exhibitionName !== exhibitionName);
+            saveExhibitions();
+            updateCalendar();
+        }
+
+        function searchExhibitions() {
+            const wilayat = document.getElementById('searchWilayat').value;
+            const company = document.getElementById('searchCompany').value;
+            const startDate = document.getElementById('searchStartDate').value;
+            const endDate = document.getElementById('searchEndDate').value;
+
+            const results = exhibitions.filter(ex => 
+                (!wilayat || ex.wilayat === wilayat) &&
+                (!company || ex.organizingCompany.includes(company)) &&
+                (!startDate || new Date(ex.endDate) >= new Date(startDate)) &&
+                (!endDate || new Date(ex.startDate) <= new Date(endDate))
+            );
+
+            displaySearchResults(results);
+        }
+
+        function displaySearchResults(results) {
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = '<h2>نتائج البحث</h2>';
+            results.forEach(ex => {
+                resultsDiv.innerHTML += `
+                    <div>
+                        ${ex.exhibitionName} (${ex.startDate} - ${ex.endDate})
+                        الولاية: ${ex.wilayat}, الشركة المنظمة: ${ex.organizingCompany}, أدخل بواسطة: ${ex.addedBy}
+                        <button onclick="deleteExhibition('${ex.exhibitionName}')">حذف</button>
+                        <button onclick="generateExhibitionDocument('${ex.exhibitionName}')">توليد تصريح</button>
+                    </div>
+                `;
+            });
+        }
+
+        function showAllExhibitions() {
+            displaySearchResults(exhibitions);
+        }
+
+        function generateReport() {
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(exhibitions.map(ex => ({
+                'اسم المعرض': ex.exhibitionName,
+                'الموقع': ex.location,
+                'الولاية': ex.wilayat,
+                'تاريخ البداية': ex.startDate,
+                'تاريخ النهاية': ex.endDate,
+                'نوع المعرض': ex.exhibitionType,
+                'الشركة المنظمة': ex.organizingCompany,
+                'أضيف بواسطة': ex.addedBy
+            })));
+            XLSX.utils.book_append_sheet(wb, ws, "المعارض");
+            XLSX.writeFile(wb, "تقرير_المعارض.xlsx");
+        }
+
+        function generateExhibitionDocument(exhibitionName) {
+            const exhibition = exhibitions.find(ex => ex.exhibitionName === exhibitionName);
+            if (!exhibition) {
+                alert('المعرض غير موجود');
+                return;
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://Tariq919.github.io/exhibition-management-system/templates/template.docx', true);
+            xhr.responseType = 'arraybuffer';
+
+            xhr.onload = function(e) {
+                if (xhr.status === 200) {
+                    const template = xhr.response;
+                    const zip = new PizZip(template);
+                    const doc = new window.docxtemplater(zip);
+
+                    doc.setData({
+                        exhibitionName: exhibition.exhibitionName,
+                        location: exhibition.location,
+                        wilayat: exhibition.wilayat,
+                        startDate: exhibition.startDate,
+                        endDate: exhibition.endDate,
+                        exhibitionType: exhibition.exhibitionType,
+                        organizingCompany: exhibition.organizingCompany,
+                        addedBy: exhibition.addedBy
+                    });
+
+                    try {
+                        doc.render();
+                    } catch (error) {
+                        console.error(error);
+                        alert('حدث خطأ أثناء توليد التصريح');
+                        return;
+                    }
+
+                    const out = doc.getZip().generate({
+                        type: 'blob',
+                        mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    });
+
+                    saveAs(out, `تصريح_${exhibition.exhibitionName}.docx`);
+                }
+            };
+
+            xhr.send();
+        }
+
+        function navigateToUserManagement() {
+            window.location.href = 'user_management.html';
+        }
+    </script>
+</body>
+</html>

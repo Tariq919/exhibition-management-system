@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المستخدمين</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #8B0000;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #A52A2A;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>إدارة المستخدمين</h1>
+        <form id="addUserForm" onsubmit="return addUser()">
+            <label for="newUsername">اسم المستخدم الجديد:</label>
+            <input type="text" id="newUsername" required>
+            <label for="newPassword">كلمة المرور الجديدة:</label>
+            <input type="password" id="newPassword" required>
+            <button type="submit">إضافة مستخدم</button>
+            <div id="addUserError" class="error"></div>
+        </form>
+        <div id="userList">
+            <h2>قائمة المستخدمين</h2>
+            <!-- سيتم ملء هذه القائمة ديناميكيًا -->
+        </div>
+    </div>
+
+    <script>
+        let storageAvailable = false;
+        try {
+            localStorage.setItem('test', 'test');
+            localStorage.removeItem('test');
+            storageAvailable = true;
+        } catch(e) {
+            console.warn('localStorage غير متاح. سيتم استخدام التخزين المؤقت في الذاكرة.');
+        }
+
+        let users = [];
+        let currentUser = localStorage.getItem('currentUser');
+
+        if (storageAvailable) {
+            const storedUsers = localStorage.getItem('users');
+            if (storedUsers) {
+                users = JSON.parse(storedUsers);
+            }
+        }
+
+        window.onload = function() {
+            if (currentUser !== 'admin') {
+                alert('غير مصرح لك بالوصول إلى هذه الصفحة');
+                window.location.href = 'index.html';
+                return;
+            }
+            updateUserList();
+        };
+
+        function saveUsers() {
+            if (storageAvailable) {
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        }
+
+        function addUser() {
+            const newUsername = document.getElementById('newUsername').value;
+            const newPassword = document.getElementById('newPassword').value;
+
+            if (users.find(user => user.username === newUsername)) {
+                document.getElementById('addUserError').innerText = 'اسم المستخدم موجود بالفعل';
+                return false;
+            }
+
+            users.push({ username: newUsername, password: newPassword });
+            saveUsers();
+            updateUserList();
+            document.getElementById('addUserForm').reset();
+            document.getElementById('addUserError').innerText = '';
+            return false;
+        }
+
+        function deleteUser(username) {
+            users = users.filter(user => user.username !== username);
+            saveUsers();
+            updateUserList();
+        }
+
+        function updateUserList() {
+            const userListDiv = document.getElementById('userList');
+            userListDiv.innerHTML = '<h2>قائمة المستخدمين</h2>';
+            users.forEach(user => {
+                userListDiv.innerHTML += `
+                    <div>
+                        ${user.username} 
+                        <button onclick="deleteUser('${user.username}')">حذف</button>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
