@@ -98,63 +98,6 @@
         <div class="footer">جميع الحقوق محفوظة لادارة التجارة والصناعة وترويج الاستثمار بمحافظة جنوب الباطنة</div>
     </div>
 
-    <script>
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-
-        window.onload = function() {
-            displayUsers();
-        };
-
-        document.getElementById('userForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            addUser();
-        });
-
-        function saveUsers() {
-            localStorage.setItem('users', JSON.stringify(users));
-        }
-
-        function addUser() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            const existingUser = users.find(user => user.username === username);
-            if (existingUser) {
-                document.getElementById('userError').innerText = 'اسم المستخدم موجود بالفعل.';
-                return;
-            }
-
-            const newUser = {
-                username,
-                password
-            };
-
-            users.push(newUser);
-            saveUsers();
-            displayUsers();
-            document.getElementById('userForm').reset();
-            document.getElementById('userError').innerText = '';
-            document.getElementById('userSuccess').innerText = 'تمت إضافة المستخدم بنجاح';
-        }
-
-        function deleteUser(username) {
-            users = users.filter(user => user.username !== username);
-            saveUsers();
-            displayUsers();
-        }
-
-        function displayUsers() {
-            const userList = document.getElementById('userList');
-            userList.innerHTML = '';
-            users.forEach(user => {
-                userList.innerHTML += `
-                    <div>
-                        اسم المستخدم: ${user.username}
-                        <button onclick="deleteUser('${user.username}')">حذف</button>
-                    </div>
-                `;
-            });
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
