@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام إدارة المعارض - محافظة جنوب الباطنة</title>
+    <!-- مكتبات FullCalendar -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.js"></script>
+    <!-- مكتبة XLSX -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.0.0/pizzip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.23.7/docxtemplater.min.js"></script>
+    <!-- مكتبة PizZip -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.2.2/pizzip.min.js"></script>
+    <!-- مكتبة docxtemplater -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.4/docxtemplater.min.js"></script>
+    <!-- مكتبة FileSaver -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -393,7 +398,13 @@
                     });
 
                     saveAs(out, `تصريح_${exhibition.exhibitionName}.docx`);
+                } else {
+                    alert('تعذر تحميل قالب التصريح');
                 }
+            };
+
+            xhr.onerror = function() {
+                alert('تعذر الاتصال بالخادم لتحميل القالب');
             };
 
             xhr.send();
