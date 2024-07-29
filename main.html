@@ -54,7 +54,7 @@
             box-sizing: border-box;
         }
         button {
-            background-color: #8B0000; /* Dark red color */
+            background-color: #8B0000;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -64,7 +64,7 @@
             width: 100%;
         }
         button:hover {
-            background-color: #A52A2A; /* Brown color */
+            background-color: #A52A2A;
         }
         #calendar, #searchResults {
             margin-top: 20px;
@@ -92,36 +92,6 @@
             margin-top: auto;
         }
     </style>
-    <script>
-        // التحقق من تحميل المكتبات
-        window.onload = function() {
-            if (typeof FullCalendar === 'undefined') {
-                console.error('مكتبة FullCalendar لم يتم تحميلها بشكل صحيح.');
-            } else {
-                console.log('مكتبة FullCalendar تم تحميلها بنجاح.');
-            }
-            if (typeof XLSX === 'undefined') {
-                console.error('مكتبة XLSX لم يتم تحميلها بشكل صحيح.');
-            } else {
-                console.log('مكتبة XLSX تم تحميلها بنجاح.');
-            }
-            if (typeof PizZip === 'undefined') {
-                console.error('مكتبة PizZip لم يتم تحميلها بشكل صحيح.');
-            } else {
-                console.log('مكتبة PizZip تم تحميلها بنجاح.');
-            }
-            if (typeof docxtemplater === 'undefined') {
-                console.error('مكتبة docxtemplater لم يتم تحميلها بشكل صحيح.');
-            } else {
-                console.log('مكتبة docxtemplater تم تحميلها بنجاح.');
-            }
-            if (typeof saveAs === 'undefined') {
-                console.error('مكتبة FileSaver لم يتم تحميلها بشكل صحيح.');
-            } else {
-                console.log('مكتبة FileSaver تم تحميلها بنجاح.');
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="container">
