@@ -75,22 +75,6 @@
         </form>
     </div>
 
-    <script>
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            const user = users.find(user => user.username === username && user.password === password);
-            if (user) {
-                localStorage.setItem('currentUser', username);
-                window.location.href = 'main.html';
-            } else {
-                document.getElementById('loginError').innerText = 'اسم المستخدم أو كلمة المرور غير صحيحة';
-            }
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
