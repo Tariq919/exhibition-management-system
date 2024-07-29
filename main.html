@@ -21,6 +21,9 @@
             margin: 0;
             padding: 20px;
             background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
             background-color: white;
@@ -29,7 +32,9 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             max-width: 600px;
             margin: 0 auto;
-            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         h1, h2 {
             color: #333;
@@ -84,11 +89,39 @@
         }
         .footer {
             text-align: center;
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
+            margin-top: auto;
         }
     </style>
+    <script>
+        // التحقق من تحميل المكتبات
+        window.onload = function() {
+            if (typeof FullCalendar === 'undefined') {
+                console.error('مكتبة FullCalendar لم يتم تحميلها بشكل صحيح.');
+            } else {
+                console.log('مكتبة FullCalendar تم تحميلها بنجاح.');
+            }
+            if (typeof XLSX === 'undefined') {
+                console.error('مكتبة XLSX لم يتم تحميلها بشكل صحيح.');
+            } else {
+                console.log('مكتبة XLSX تم تحميلها بنجاح.');
+            }
+            if (typeof PizZip === 'undefined') {
+                console.error('مكتبة PizZip لم يتم تحميلها بشكل صحيح.');
+            } else {
+                console.log('مكتبة PizZip تم تحميلها بنجاح.');
+            }
+            if (typeof docxtemplater === 'undefined') {
+                console.error('مكتبة docxtemplater لم يتم تحميلها بشكل صحيح.');
+            } else {
+                console.log('مكتبة docxtemplater تم تحميلها بنجاح.');
+            }
+            if (typeof saveAs === 'undefined') {
+                console.error('مكتبة FileSaver لم يتم تحميلها بشكل صحيح.');
+            } else {
+                console.log('مكتبة FileSaver تم تحميلها بنجاح.');
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -388,7 +421,7 @@
                         doc.render();
                     } catch (error) {
                         console.error(error);
-                        alert('حدث خطأ أثناء توليد التصريح');
+                        alert('حدث خطأ أثناء توليد التصريح: ' + error.message);
                         return;
                     }
 
@@ -399,12 +432,12 @@
 
                     saveAs(out, `تصريح_${exhibition.exhibitionName}.docx`);
                 } else {
-                    alert('تعذر تحميل قالب التصريح');
+                    alert('تعذر تحميل قالب التصريح. الرجاء التحقق من الرابط.');
                 }
             };
 
             xhr.onerror = function() {
-                alert('تعذر الاتصال بالخادم لتحميل القالب');
+                alert('تعذر الاتصال بالخادم لتحميل القالب.');
             };
 
             xhr.send();
