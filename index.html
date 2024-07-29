@@ -10,6 +10,10 @@
             margin: 0;
             padding: 20px;
             background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
             background-color: white;
@@ -17,11 +21,13 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             max-width: 400px;
-            margin: 0 auto;
-            text-align: center;
+            width: 100%;
         }
         h1 {
             color: #333;
+            text-align: center;
+        }
+        form {
             margin-bottom: 20px;
         }
         label {
@@ -41,7 +47,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
             width: 100%;
         }
         button:hover {
@@ -50,64 +56,41 @@
         .error {
             color: red;
             font-size: 0.9em;
-            margin-top: 10px;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>تسجيل الدخول</h1>
-        <form id="loginForm" onsubmit="return login()">
+        <form id="loginForm">
             <label for="username">اسم المستخدم:</label>
             <input type="text" id="username" required>
+            
             <label for="password">كلمة المرور:</label>
             <input type="password" id="password" required>
+            
             <button type="submit">دخول</button>
             <div id="loginError" class="error"></div>
         </form>
     </div>
 
     <script>
-        // التحقق من توفر localStorage
-        let storageAvailable = false;
-        try {
-            localStorage.setItem('test', 'test');
-            localStorage.removeItem('test');
-            storageAvailable = true;
-        } catch(e) {
-            console.warn('localStorage غير متاح. سيتم استخدام التخزين المؤقت في الذاكرة.');
-        }
+        const users = JSON.parse(localStorage.getItem('users')) || [];
 
-        // إضافة مستخدم افتراضي إذا لم يكن هناك مستخدمين
-        if (storageAvailable) {
-            let users = localStorage.getItem('users');
-            if (!users) {
-                users = [{ username: 'admin', password: 'admin' }];
-                localStorage.setItem('users', JSON.stringify(users));
-            }
-        }
-
-        function login() {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const storedUsers = localStorage.getItem('users');
-            let users = [];
-            
-            if (storedUsers) {
-                users = JSON.parse(storedUsers);
-            }
 
             const user = users.find(user => user.username === username && user.password === password);
-
             if (user) {
                 localStorage.setItem('currentUser', username);
                 window.location.href = 'main.html';
             } else {
                 document.getElementById('loginError').innerText = 'اسم المستخدم أو كلمة المرور غير صحيحة';
             }
-
-            return false;
-        }
+        });
     </script>
 </body>
 </html>
