@@ -3,32 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدارة المستخدمين</title>
+    <title>إدارة المستخدمين - نظام إدارة المعارض</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
             background-color: white;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 400px;
+            max-width: 600px;
             margin: 0 auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        h1, h2 {
+            color: #333;
             text-align: center;
         }
-        h1 {
-            color: #333;
+        form {
             margin-bottom: 20px;
         }
         label {
             display: block;
             margin-top: 10px;
         }
-        input {
+        input, select {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -41,7 +49,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
             width: 100%;
         }
         button:hover {
@@ -50,92 +58,98 @@
         .error {
             color: red;
             font-size: 0.9em;
-            margin-top: 10px;
+            margin-top: 5px;
+        }
+        .success {
+            color: green;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>إدارة المستخدمين</h1>
-        <form id="addUserForm" onsubmit="return addUser()">
-            <label for="newUsername">اسم المستخدم الجديد:</label>
-            <input type="text" id="newUsername" required>
-            <label for="newPassword">كلمة المرور الجديدة:</label>
-            <input type="password" id="newPassword" required>
-            <button type="submit">إضافة مستخدم</button>
-            <div id="addUserError" class="error"></div>
-        </form>
-        <div id="userList">
-            <h2>قائمة المستخدمين</h2>
-            <!-- سيتم ملء هذه القائمة ديناميكيًا -->
+        <h1>إدارة المستخدمين - نظام إدارة المعارض</h1>
+
+        <div id="userFormContainer">
+            <h2>إضافة مستخدم جديد</h2>
+            <form id="userForm">
+                <label for="username">اسم المستخدم:</label>
+                <input type="text" id="username" required>
+                
+                <label for="password">كلمة المرور:</label>
+                <input type="password" id="password" required>
+                
+                <button type="submit">إضافة المستخدم</button>
+                <div id="userError" class="error"></div>
+                <div id="userSuccess" class="success"></div>
+            </form>
         </div>
+
+        <div id="userListContainer">
+            <h2>قائمة المستخدمين</h2>
+            <div id="userList"></div>
+        </div>
+
+        <div class="footer">جميع الحقوق محفوظة لادارة التجارة والصناعة وترويج الاستثمار بمحافظة جنوب الباطنة</div>
     </div>
 
     <script>
-        let storageAvailable = false;
-        try {
-            localStorage.setItem('test', 'test');
-            localStorage.removeItem('test');
-            storageAvailable = true;
-        } catch(e) {
-            console.warn('localStorage غير متاح. سيتم استخدام التخزين المؤقت في الذاكرة.');
-        }
-
-        let users = [];
-        let currentUser = localStorage.getItem('currentUser');
-
-        if (storageAvailable) {
-            const storedUsers = localStorage.getItem('users');
-            if (storedUsers) {
-                users = JSON.parse(storedUsers);
-            }
-        }
+        let users = JSON.parse(localStorage.getItem('users')) || [];
 
         window.onload = function() {
-            if (currentUser !== 'admin') {
-                alert('غير مصرح لك بالوصول إلى هذه الصفحة');
-                window.location.href = 'index.html';
-                return;
-            }
-            updateUserList();
+            displayUsers();
         };
 
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            addUser();
+        });
+
         function saveUsers() {
-            if (storageAvailable) {
-                localStorage.setItem('users', JSON.stringify(users));
-            }
+            localStorage.setItem('users', JSON.stringify(users));
         }
 
         function addUser() {
-            const newUsername = document.getElementById('newUsername').value;
-            const newPassword = document.getElementById('newPassword').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-            if (users.find(user => user.username === newUsername)) {
-                document.getElementById('addUserError').innerText = 'اسم المستخدم موجود بالفعل';
-                return false;
+            const existingUser = users.find(user => user.username === username);
+            if (existingUser) {
+                document.getElementById('userError').innerText = 'اسم المستخدم موجود بالفعل.';
+                return;
             }
 
-            users.push({ username: newUsername, password: newPassword });
+            const newUser = {
+                username,
+                password
+            };
+
+            users.push(newUser);
             saveUsers();
-            updateUserList();
-            document.getElementById('addUserForm').reset();
-            document.getElementById('addUserError').innerText = '';
-            return false;
+            displayUsers();
+            document.getElementById('userForm').reset();
+            document.getElementById('userError').innerText = '';
+            document.getElementById('userSuccess').innerText = 'تمت إضافة المستخدم بنجاح';
         }
 
         function deleteUser(username) {
             users = users.filter(user => user.username !== username);
             saveUsers();
-            updateUserList();
+            displayUsers();
         }
 
-        function updateUserList() {
-            const userListDiv = document.getElementById('userList');
-            userListDiv.innerHTML = '<h2>قائمة المستخدمين</h2>';
+        function displayUsers() {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
             users.forEach(user => {
-                userListDiv.innerHTML += `
+                userList.innerHTML += `
                     <div>
-                        ${user.username} 
+                        اسم المستخدم: ${user.username}
                         <button onclick="deleteUser('${user.username}')">حذف</button>
                     </div>
                 `;
