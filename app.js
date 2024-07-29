@@ -278,3 +278,7 @@ function displayUsers() {
         `;
     });
 }
+
+function navigateToUserManagement() {
+    window.location.href = 'user_management.html';
+}
