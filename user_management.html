@@ -4,100 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إدارة المستخدمين - نظام إدارة المعارض</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 600px;
-            margin: 0 auto;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        h1, h2 {
-            color: #333;
-            text-align: center;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #8B0000;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #A52A2A;
-        }
-        .error {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-        .success {
-            color: green;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-        .footer {
-            text-align: center;
-            margin-top: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>إدارة المستخدمين - نظام إدارة المعارض</h1>
-
         <div id="userFormContainer">
             <h2>إضافة مستخدم جديد</h2>
             <form id="userForm">
                 <label for="username">اسم المستخدم:</label>
                 <input type="text" id="username" required>
-                
                 <label for="password">كلمة المرور:</label>
                 <input type="password" id="password" required>
-                
                 <button type="submit">إضافة المستخدم</button>
                 <div id="userError" class="error"></div>
                 <div id="userSuccess" class="success"></div>
             </form>
         </div>
-
         <div id="userListContainer">
             <h2>قائمة المستخدمين</h2>
             <div id="userList"></div>
         </div>
-
         <div class="footer">جميع الحقوق محفوظة لادارة التجارة والصناعة وترويج الاستثمار بمحافظة جنوب الباطنة</div>
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
