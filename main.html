@@ -4,104 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام إدارة المعارض - محافظة جنوب الباطنة</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.2.2/pizzip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.4/docxtemplater.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 600px;
-            margin: 0 auto;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        h1, h2 {
-            color: #333;
-            text-align: center;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #8B0000;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #A52A2A;
-        }
-        #calendar, #searchResults {
-            margin-top: 20px;
-        }
-        .logo {
-            display: block;
-            margin: 0 auto 20px;
-            max-width: 200px;
-        }
-        .highlight {
-            background-color: yellow;
-        }
-        .error {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-        .success {
-            color: green;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-        .footer {
-            text-align: center;
-            margin-top: auto;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <img src="https://upload.wikimedia.org/wikipedia/ar/3/30/%D8%B4%D8%B9%D8%A7%D8%B1_%D9%88%D8%B2%D8%A7%D8%B1%D8%A9_%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9_%D9%88%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D8%A9_%D9%88%D8%AA%D8%B1%D9%88%D9%8A%D8%AC_%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1_%D8%A7%D9%84%D8%B9%D9%85%D8%A7%D9%86%D9%8A%D8%A9.jpg" alt="شعار وزارة التجارة والصناعة وترويج الاستثمار العمانية" class="logo">
         <h1>نظام إدارة المعارض - محافظة جنوب الباطنة</h1>
-
         <div id="mainContent">
-            <button id="manageUsersBtn" style="display:none;" onclick="navigateToUserManagement()">إدارة المستخدمين</button>
+            <button id="manageUsersBtn" onclick="navigateToUserManagement()">إدارة المستخدمين</button>
             <form id="exhibitionForm">
                 <label for="exhibitionName">اسم المعرض:</label>
                 <input type="text" id="exhibitionName" required>
-                
                 <label for="location">الموقع:</label>
                 <input type="text" id="location" required>
-                
                 <label for="wilayat">الولاية:</label>
                 <select id="wilayat" required>
                     <option value="">اختر الولاية</option>
@@ -112,13 +33,10 @@
                     <option value="وادي المعاول">وادي المعاول</option>
                     <option value="العوابي">العوابي</option>
                 </select>
-                
                 <label for="startDate">تاريخ البداية:</label>
                 <input type="date" id="startDate" required>
-                
                 <label for="endDate">تاريخ النهاية:</label>
                 <input type="date" id="endDate" required>
-                
                 <label for="exhibitionType">نوع المعرض:</label>
                 <select id="exhibitionType" required>
                     <option value="">اختر نوع المعرض</option>
@@ -134,18 +52,14 @@
                     <option value="معرض العيد">معرض العيد</option>
                     <option value="المعرض الافتراضي">المعرض الافتراضي</option>
                 </select>
-                
                 <label for="organizingCompany">الشركة المنظمة:</label>
                 <input type="text" id="organizingCompany" required>
-                
                 <button type="submit">إضافة المعرض</button>
                 <div id="exhibitionError" class="error"></div>
                 <div id="exhibitionSuccess" class="success"></div>
             </form>
-
             <button onclick="showAllExhibitions()">عرض جميع المعارض</button>
             <button onclick="generateReport()">توليد تقرير</button>
-
             <div id="searchForm">
                 <h2>البحث عن المعارض</h2>
                 <label for="searchWilayat">الولاية:</label>
@@ -158,25 +72,19 @@
                     <option value="وادي المعاول">وادي المعاول</option>
                     <option value="العوابي">العوابي</option>
                 </select>
-                
                 <label for="searchCompany">الشركة المنظمة:</label>
                 <input type="text" id="searchCompany">
-                
                 <label for="searchStartDate">من تاريخ:</label>
                 <input type="date" id="searchStartDate">
-                
                 <label for="searchEndDate">إلى تاريخ:</label>
                 <input type="date" id="searchEndDate">
-                
                 <button type="button" onclick="searchExhibitions()">بحث</button>
             </div>
-
             <div id="calendar"></div>
             <div id="searchResults"></div>
         </div>
         <div class="footer">جميع الحقوق محفوظة لادارة التجارة والصناعة وترويج الاستثمار بمحافظة جنوب الباطنة</div>
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
