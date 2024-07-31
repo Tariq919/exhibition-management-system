@@ -18,6 +18,7 @@
             <div id="loginError" class="error"></div>
         </form>
     </div>
+    <!-- روابط CDN لمكتبات Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
@@ -31,9 +32,7 @@
             appId: "1:629910182359:web:01012bf8140139a338d392",
             measurementId: "G-5K7N5DHS10"
         };
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
+        firebase.initializeApp(firebaseConfig);
     </script>
     <script src="login.js"></script>
 </body>
