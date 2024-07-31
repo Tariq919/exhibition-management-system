@@ -14,9 +14,9 @@ const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const database = firebase.database();
 
-let currentUser = localStorage.getItem('currentUser');
-
 window.onload = function() {
+    let currentUser = localStorage.getItem('currentUser');
+
     if (!currentUser && window.location.pathname !== '/index.html') {
         window.location.href = 'index.html';
         return;
@@ -97,7 +97,7 @@ function addExhibition() {
         endDate,
         exhibitionType,
         organizingCompany,
-        addedBy: currentUser
+        addedBy: localStorage.getItem('currentUser')
     };
 
     database.ref('exhibitions').push(newExhibition, function(error) {
