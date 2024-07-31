@@ -27,6 +27,26 @@
         </div>
         <div class="footer">جميع الحقوق محفوظة لادارة التجارة والصناعة وترويج الاستثمار بمحافظة جنوب الباطنة</div>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <!-- Firebase configuration -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYEqXt4BnW26yq-Xp_30Gaf_-RyNNOoIY",
+            authDomain: "exhibition-management-sy-f455b.firebaseapp.com",
+            projectId: "exhibition-management-sy-f455b",
+            storageBucket: "exhibition-management-sy-f455b.appspot.com",
+            messagingSenderId: "629910182359",
+            appId: "1:629910182359:web:01012bf8140139a338d392",
+            measurementId: "G-5K7N5DHS10"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+    </script>
     <script src="app.js"></script>
 </body>
 </html>
