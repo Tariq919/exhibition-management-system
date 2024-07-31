@@ -18,11 +18,12 @@
             <div id="loginError" class="error"></div>
         </form>
     </div>
-    <!-- روابط CDN لمكتبات Firebase -->
+    <!-- تحميل مكتبات Firebase عبر CDN -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
     <script>
+        // تهيئة Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCYEqXt4BnW26yq-Xp_30Gaf_-RyNNOoIY",
             authDomain: "exhibition-management-sy-f455b.firebaseapp.com",
@@ -32,7 +33,9 @@
             appId: "1:629910182359:web:01012bf8140139a338d392",
             measurementId: "G-5K7N5DHS10"
         };
-        firebase.initializeApp(firebaseConfig);
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
     </script>
     <script src="login.js"></script>
 </body>
