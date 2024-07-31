@@ -18,4 +18,15 @@ window.onload = function() {
             }
         });
     });
+
+    // إضافة مستخدم افتراضي عند تحميل الصفحة لأول مرة
+    database.ref('users').once('value', snapshot => {
+        if (!snapshot.exists()) {
+            const defaultUser = {
+                username: 'admin',
+                password: 'admin123'
+            };
+            database.ref('users').push(defaultUser);
+        }
+    });
 };
