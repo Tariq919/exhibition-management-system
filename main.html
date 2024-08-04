@@ -4,104 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام إدارة المعارض - محافظة جنوب الباطنة</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.2.2/pizzip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.4/docxtemplater.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <img src="https://upload.wikimedia.org/wikipedia/ar/3/30/%D8%B4%D8%B9%D8%A7%D8%B1_%D9%88%D8%B2%D8%A7%D8%B1%D8%A9_%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9_%D9%88%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D8%A9_%D9%88%D8%AA%D8%B1%D9%88%D9%8A%D8%AC_%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1_%D8%A7%D9%84%D8%B9%D9%85%D8%A7%D9%86%D9%8A%D8%A9.jpg" alt="شعار وزارة التجارة والصناعة وترويج الاستثمار العمانية" class="logo">
         <h1>نظام إدارة المعارض - محافظة جنوب الباطنة</h1>
-        <div id="mainContent" style="display: none;">
-            <button id="manageUsersBtn" style="display: none;" onclick="navigateToUserManagement()">إدارة المستخدمين</button>
-            <form id="exhibitionForm">
-                <label for="exhibitionName">اسم المعرض:</label>
-                <input type="text" id="exhibitionName" required>
-                <label for="location">الموقع:</label>
-                <input type="text" id="location" required>
-                <label for="wilayat">الولاية:</label>
-                <select id="wilayat" required>
-                    <option value="">اختر الولاية</option>
-                    <option value="الرستاق">الرستاق</option>
-                    <option value="بركاء">بركاء</option>
-                    <option value="المصنعة">المصنعة</option>
-                    <option value="نخل">نخل</option>
-                    <option value="وادي المعاول">وادي المعاول</option>
-                    <option value="العوابي">العوابي</option>
-                </select>
-                <label for="startDate">تاريخ البداية:</label>
-                <input type="date" id="startDate" required>
-                <label for="endDate">تاريخ النهاية:</label>
-                <input type="date" id="endDate" required>
-                <label for="exhibitionType">نوع المعرض:</label>
-                <select id="exhibitionType" required>
-                    <option value="">اختر نوع المعرض</option>
-                    <option value="معرض الاسر المنتجة">معرض الاسر المنتجة</option>
-                    <option value="معرض المنتجات الوطنية">معرض المنتجات الوطنية</option>
-                    <option value="المعرض المبتكر">المعرض المبتكر</option>
-                    <option value="معرض الدولة الواحدة">معرض الدولة الواحدة</option>
-                    <option value="معرض تخصصي">معرض تخصصي</option>
-                    <option value="معرض مصاحب">معرض مصاحب</option>
-                    <option value="معرض المنتجات والصناعات الخليجية">معرض المنتجات والصناعات الخليجية</option>
-                    <option value="المعرض الثقافي">المعرض الثقافي</option>
-                    <option value="المعرض الخيري">المعرض الخيري</option>
-                    <option value="معرض العيد">معرض العيد</option>
-                    <option value="المعرض الافتراضي">المعرض الافتراضي</option>
-                </select>
-                <label for="organizingCompany">الشركة المنظمة:</label>
-                <input type="text" id="organizingCompany" required>
-                <button type="submit">إضافة المعرض</button>
-                <div id="exhibitionError" class="error"></div>
-                <div id="exhibitionSuccess" class="success"></div>
-            </form>
-            <button onclick="showAllExhibitions()">عرض جميع المعارض</button>
-            <button onclick="generateReport()">توليد تقرير</button>
-            <div id="searchForm">
-                <h2>البحث عن المعارض</h2>
-                <label for="searchWilayat">الولاية:</label>
-                <select id="searchWilayat">
-                    <option value="">الكل</option>
-                    <option value="الرستاق">الرستاق</option>
-                    <option value="بركاء">بركاء</option>
-                    <option value="المصنعة">المصنعة</option>
-                    <option value="نخل">نخل</option>
-                    <option value="وادي المعاول">وادي المعاول</option>
-                    <option value="العوابي">العوابي</option>
-                </select>
-                <label for="searchCompany">الشركة المنظمة:</label>
-                <input type="text" id="searchCompany">
-                <label for="searchStartDate">من تاريخ:</label>
-                <input type="date" id="searchStartDate">
-                <label for="searchEndDate">إلى تاريخ:</label>
-                <input type="date" id="searchEndDate">
-                <button type="button" onclick="searchExhibitions()">بحث</button>
-            </div>
-            <div id="calendar"></div>
-            <div id="searchResults"></div>
-        </div>
+        <button id="manageUsersBtn" onclick="navigateToUserManagement()">إدارة المستخدمين</button>
+        <form id="exhibitionForm">
+            <label for="exhibitionName">اسم المعرض:</label>
+            <input type="text" id="exhibitionName" required>
+            <label for="location">الموقع:</label>
+            <input type="text" id="location" required>
+            <label for="wilayat">الولاية:</label>
+            <input type="text" id="wilayat" required>
+            <label for="startDate">تاريخ البداية:</label>
+            <input type="date" id="startDate" required>
+            <label for="endDate">تاريخ النهاية:</label>
+            <input type="date" id="endDate" required>
+            <label for="exhibitionType">نوع المعرض:</label>
+            <input type="text" id="exhibitionType" required>
+            <label for="organizingCompany">الشركة المنظمة:</label>
+            <input type="text" id="organizingCompany" required>
+            <button type="submit">إضافة المعرض</button>
+            <div id="exhibitionError" class="error"></div>
+            <div id="exhibitionSuccess" class="success"></div>
+        </form>
+        <button onclick="showAllExhibitions()">عرض جميع المعارض</button>
+        <div id="exhibitionList"></div>
         <div class="footer">جميع الحقوق محفوظة لادارة التجارة والصناعة وترويج الاستثمار بمحافظة جنوب الباطنة</div>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCYEqXt4BnW26yq-Xp_30Gaf_-RyNNOoIY",
-            authDomain: "exhibition-management-sy-f455b.firebaseapp.com",
-            projectId: "exhibition-management-sy-f455b",
-            storageBucket: "exhibition-management-sy-f455b.appspot.com",
-            messagingSenderId: "629910182359",
-            appId: "1:629910182359:web:01012bf8140139a338d392",
-            measurementId: "G-5K7N5DHS10"
-        };
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-    </script>
     <script src="main.js"></script>
 </body>
 </html>
