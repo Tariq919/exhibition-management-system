@@ -1,58 +1,47 @@
-window.onload = function() {
-    fetchUsers();
-
-    document.getElementById('userForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        addUser();
-    });
-};
-
-function fetchUsers() {
-    database.ref('users').on('value', snapshot => {
-        const users = snapshot.val() || {};
-        displayUsers(Object.values(users));
-    });
-}
-
-function addUser() {
+document.getElementById('userForm').addEventListener('submit', function(e) {
+    e.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    database.ref('users').orderByChild('username').equalTo(username).once('value', snapshot => {
-        if (snapshot.exists()) {
-            document.getElementById('userError').innerText = 'اسم المستخدم موجود بالفعل.';
+    fetch('save_user.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('userSuccess').innerText = 'تمت إضافة المستخدم بنجاح';
+            document.getElementById('userForm').reset();
+            fetchUsers();
         } else {
-            const newUser = {
-                username,
-                password
-            };
-
-            database.ref('users').push(newUser, function(error) {
-                if (error) {
-                    document.getElementById('userError').innerText = 'حدث خطأ أثناء إضافة المستخدم';
-                } else {
-                    document.getElementById('userSuccess').innerText = 'تمت إضافة المستخدم بنجاح';
-                    document.getElementById('userForm').reset();
-                    setTimeout(() => document.getElementById('userSuccess').innerText = '', 3000);
-                }
-            });
+            document.getElementById('userError').innerText = 'حدث خطأ أثناء إضافة المستخدم';
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+function fetchUsers() {
+    fetch('get_users.php')
+    .then(response => response.json())
+    .then(data => {
+        const userList = document.getElementById('userList');
+        userList.innerHTML = '';
+        data.forEach(user => {
+            const userItem = document.createElement('div');
+            userItem.innerHTML = `
+                <p>اسم المستخدم: ${user.username}</p>
+            `;
+            userList.appendChild(userItem);
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
 }
 
-function deleteUser(userId) {
-    database.ref('users/' + userId).remove();
-}
-
-function displayUsers(users) {
-    const userList = document.getElementById('userList');
-    userList.innerHTML = '';
-    users.forEach(user => {
-        userList.innerHTML += `
-            <div>
-                اسم المستخدم: ${user.username}
-                <button onclick="deleteUser('${user.id}')">حذف</button>
-            </div>
-        `;
-    });
-}
+fetchUsers();
